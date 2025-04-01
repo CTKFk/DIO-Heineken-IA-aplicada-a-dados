@@ -148,30 +148,57 @@ INSERT INTO Entrega (Cliente_idCliente, Pedido_idPedido, CodigoRastreamento, Sta
 
 -- Consultas
 
--- 1. Quantos pedidos foram feitos por cada cliente?
+-- Quantos pedidos foram feitos por cada cliente?
 SELECT Cliente.Nome, COUNT(Pedido.idPedido) AS TotalPedidos
 FROM Cliente
 LEFT JOIN Pedido ON Cliente.idCliente = Pedido.Cliente_idCliente
 GROUP BY Cliente.Nome;
 
--- 2. Algum vendedor também é fornecedor?
+-- Algum vendedor também é fornecedor?
 SELECT F.Nome AS Fornecedor, V.Nome AS Vendedor
 FROM Fornecedor F
 JOIN Vendedor V ON F.Nome = V.Nome;
 
--- 3. Relação de produtos, fornecedores e estoques
+-- Relação de produtos, fornecedores e estoques
 SELECT P.Descricao, F.Nome AS Fornecedor, E.Local AS Estoque, PHE.Quantidade
 FROM Produtos P
 JOIN Produtos_has_estoque PHE ON P.idProdutos = PHE.Produtos_idProdutos
 JOIN Estoque E ON PHE.Estoque_idEstoque = E.idEstoque
 JOIN Fornecedor F ON F.idFornecedor = PHE.Produtos_idProdutos;
 
--- 4. Relação de nomes dos fornecedores e nomes dos produtos
+-- Relação de nomes dos fornecedores e nomes dos produtos
 SELECT F.Nome AS Fornecedor, P.Descricao AS Produto
 FROM Fornecedor F, Produtos P;
 
--- 5. Relação de vendedores e produtos
+-- Relação de vendedores e produtos
 SELECT V.Nome AS Vendedor, P.Descricao AS Produto, VHP.PrecoVenda
 FROM Vendedor V
 JOIN Vendedor_has_Produtos VHP ON V.idVendedor = VHP.Vendedor_idVendedor
 JOIN Produtos P ON VHP.Produtos_idProdutos = P.idProdutos;
+
+-- Recuperação simples com SELECT
+SELECT * FROM Cliente;
+
+-- Filtros com WHERE
+SELECT * FROM Pedido WHERE StatusPedido = 'Confirmado';
+
+-- Expressão para gerar atributo derivado (total com frete)
+SELECT idPedido, (SUM(Preco * Quantidade) + Frete) AS TotalPedido 
+FROM ItemPedido
+JOIN Pedido ON Pedido.idPedido = ItemPedido.Pedido_idPedido
+GROUP BY idPedido;
+
+-- Ordenação dos dados com ORDER BY
+SELECT * FROM Cliente ORDER BY Nome ASC;
+
+-- Condições de filtros aos grupos com HAVING
+SELECT Cliente_idCliente, COUNT(idPedido) AS TotalPedidos
+FROM Pedido
+GROUP BY Cliente_idCliente
+HAVING COUNT(idPedido) > 5;
+
+-- Junção entre tabelas
+SELECT Cliente.Nome, Pedido.idPedido, Pedido.StatusPedido
+FROM Cliente
+JOIN Pedido ON Cliente.idCliente = Pedido.Cliente_idCliente;
+
