@@ -127,8 +127,51 @@ CREATE TABLE Entrega (
     FOREIGN KEY (Pedido_idPedido) REFERENCES Pedido(idPedido)
 );
 
+
 -- Inserção de dados fictícios para testes
 INSERT INTO Cliente (Nome, Identificacao, Tipo) VALUES ('Empresa X', '12345678000199', 'PJ');
 INSERT INTO Cliente (Nome, Identificacao, Tipo) VALUES ('João Silva', '12345678901', 'PF');
 
 INSERT INTO Fornecedor (Nome, RazaoSocial, CNPJ) VALUES ('Fornecedor A', 'Fornecedor A Ltda', '98765432000112');
+
+INSERT INTO Produtos (Categoria, Valor, Descricao, ProdutoSKU) VALUES ('Eletrônicos', 1500.00, 'Smartphone Modelo X', 'ELE-001');
+
+INSERT INTO Estoque (Local) VALUES ('Centro de Distribuição SP');
+
+INSERT INTO Produtos_has_estoque (Produtos_idProdutos, Estoque_idEstoque, Quantidade) VALUES (1, 1, 100);
+
+INSERT INTO Pedido (StatusPedido, Descricao, Cliente_idCliente, Frete) VALUES ('Processando', 'Compra de um smartphone', 2, 20.00);
+
+INSERT INTO Pagamento (Status, Valor, Pedido_idPedido) VALUES ('Aprovado', 1520.00, 1);
+
+INSERT INTO Entrega (Cliente_idCliente, Pedido_idPedido, CodigoRastreamento, Status, DataEnvio, DataEntregaPrevista) VALUES (2, 1, 'BR123456789', 'Em trânsito', NOW(), DATE_ADD(NOW(), INTERVAL 5 DAY));
+
+-- Consultas
+
+-- 1. Quantos pedidos foram feitos por cada cliente?
+SELECT Cliente.Nome, COUNT(Pedido.idPedido) AS TotalPedidos
+FROM Cliente
+LEFT JOIN Pedido ON Cliente.idCliente = Pedido.Cliente_idCliente
+GROUP BY Cliente.Nome;
+
+-- 2. Algum vendedor também é fornecedor?
+SELECT F.Nome AS Fornecedor, V.Nome AS Vendedor
+FROM Fornecedor F
+JOIN Vendedor V ON F.Nome = V.Nome;
+
+-- 3. Relação de produtos, fornecedores e estoques
+SELECT P.Descricao, F.Nome AS Fornecedor, E.Local AS Estoque, PHE.Quantidade
+FROM Produtos P
+JOIN Produtos_has_estoque PHE ON P.idProdutos = PHE.Produtos_idProdutos
+JOIN Estoque E ON PHE.Estoque_idEstoque = E.idEstoque
+JOIN Fornecedor F ON F.idFornecedor = PHE.Produtos_idProdutos;
+
+-- 4. Relação de nomes dos fornecedores e nomes dos produtos
+SELECT F.Nome AS Fornecedor, P.Descricao AS Produto
+FROM Fornecedor F, Produtos P;
+
+-- 5. Relação de vendedores e produtos
+SELECT V.Nome AS Vendedor, P.Descricao AS Produto, VHP.PrecoVenda
+FROM Vendedor V
+JOIN Vendedor_has_Produtos VHP ON V.idVendedor = VHP.Vendedor_idVendedor
+JOIN Produtos P ON VHP.Produtos_idProdutos = P.idProdutos;
