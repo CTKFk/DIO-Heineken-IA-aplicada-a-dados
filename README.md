@@ -25,4 +25,5 @@ Replicação e refinamento do modelo do projeto lógico de banco de dados para o
 
 
 ##*Construção do  projeto logico de banco de dados do 0*
+
 Criação do projeto logico de banco de dados no contexto da Oficina realizado anteriormente
