@@ -1,13 +1,13 @@
 # DIO-Heineken-IA-aplicada-a-dados
- ##*E-commerce*
+ ## *E-commerce*
 
 Refinamento do esboço para banco de dados para e-commerce, na qual foi adicionado a entidades referentes ao pagamento e entrega. Além disso, foi adicionado um atributo em cliente para diferenciar se um cliente é PJ ou PF
 
-##*Mecanica*
+## *Mecanica*
 
 Criação de um esquema conceitual de banco de dados conforme a narrativa
 
-##*Construção do primeiro projeto logico de banco de dados*
+## *Construção do primeiro projeto logico de banco de dados*
 
 Replicação e refinamento do modelo do projeto lógico de banco de dados para o cenário de e-commerce e a criação do Script SQL para criação de esquema do banco de dados.Além da persistência de dados para realização de testes seguindo com as cláusulas abaixo:
 
@@ -24,6 +24,6 @@ Replicação e refinamento do modelo do projeto lógico de banco de dados para o
 -Crie junções entre tabelas para fornecer uma perspectiva mais complexa dos dados
 
 
-##*Construção do  projeto logico de banco de dados do 0*
+## *Construção do  projeto logico de banco de dados do 0*
 
 Criação do projeto logico de banco de dados no contexto da Oficina realizado anteriormente
